@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Circuit Atlas | F1 赛历</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="返回 Circuit Atlas 首页" title="返回首页">
+          <span class="brand-title">赛道图鉴</span>
+          <span class="brand-subtitle">Circuit Atlas</span>
+          <span class="brand-home" aria-hidden="true">首页</span>
+        </a>
+
+        <nav class="nav-tabs" aria-label="主导航">
+          <a class="active" href="#calendar">日历</a>
+          <a href="#circuit">赛道</a>
+          <a href="#sessions">时间</a>
+          <a href="#sources">数据</a>
+        </nav>
+
+        <div class="season-switcher" aria-label="赛季选择">
+          <button type="button" data-season="2024">2024</button>
+          <button type="button" data-season="2025">2025</button>
+          <button type="button" data-season="2026" class="active">2026</button>
+        </div>
+
+        <div class="timezone-card" aria-live="polite">
+          <span class="timezone-dot"></span>
+          <div>
+            <span>我的时区</span>
+            <strong id="deviceTimezone">检测中</strong>
+          </div>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="atlas-pane" id="calendar" aria-labelledby="calendarTitle">
+          <div class="controls">
+            <div class="filter-tabs" aria-label="筛选">
+              <button type="button" class="active" data-filter="all">全部赛事</button>
+              <button type="button" data-filter="sprint">冲刺赛周末</button>
+              <button type="button" data-filter="upcoming">即将到来</button>
+            </div>
+            <label class="search-box">
+              <span>搜索</span>
+              <input id="searchInput" type="search" placeholder="大奖赛、城市、国家或赛道" />
+            </label>
+          </div>
+
+          <div class="legend" aria-label="状态图例">
+            <span><i class="done"></i> 已完成</span>
+            <span><i class="live"></i> 本周末</span>
+            <span><i class="next"></i> 即将进行</span>
+          </div>
+
+          <div class="atlas-map">
+            <img src="assets/atlas-map.png" alt="" aria-hidden="true" />
+            <div class="race-route" id="raceRoute"></div>
+          </div>
+
+          <div class="mobile-race-list" id="mobileRaceList"></div>
+        </section>
+
+        <aside class="detail-pane" id="circuit">
+          <div class="detail-hero">
+            <div>
+              <p class="eyebrow" id="roundLabel">第 -- 站</p>
+              <h1 id="raceName">加载中</h1>
+              <p id="raceMeta">正在整理赛历数据</p>
+            </div>
+            <button class="favorite-button" type="button" id="favoriteButton" aria-label="收藏本站">
+              收藏
+            </button>
+          </div>
+
+          <div class="fact-strip" id="factStrip"></div>
+
+          <section class="panel" aria-labelledby="sessionTitle" id="sessions">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Weekend Sessions</p>
+                <h2 id="sessionTitle">赛程安排</h2>
+              </div>
+              <div class="time-note">
+                <span id="localTimezone">赛道时区</span>
+                <span id="myTimezone">我的时区</span>
+              </div>
+            </div>
+            <div class="session-table" id="sessionTable"></div>
+          </section>
+
+          <section class="panel compact" aria-labelledby="sourceTitle" id="sources">
+            <h2 id="sourceTitle">数据说明</h2>
+            <p>
+              赛程与 session 开始时间来自 Jolpica Ergast 兼容 API，赛季/赛道展示参考 Formula 1
+              官方赛历页。前端按设备时区实时换算。
+            </p>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <script src="data/circuit-meta.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
