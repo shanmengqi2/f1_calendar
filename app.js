@@ -1,4 +1,4 @@
-const YEARS = [2024, 2025, 2026];
+const YEARS = [2024, 2025, 2026, 2027];
 const SESSION_LABELS = {
   FirstPractice: { short: "FP1", cn: "第一次练习赛" },
   SecondPractice: { short: "FP2", cn: "第二次练习赛" },
@@ -10,6 +10,8 @@ const SESSION_LABELS = {
 };
 
 const RACE_NAME_CN = {
+  "Portuguese Grand Prix": "葡萄牙大奖赛",
+  "Turkish Grand Prix": "土耳其大奖赛",
   "Australian Grand Prix": "澳大利亚大奖赛",
   "Bahrain Grand Prix": "巴林大奖赛",
   "Saudi Arabian Grand Prix": "沙特阿拉伯大奖赛",
@@ -39,6 +41,8 @@ const RACE_NAME_CN = {
 };
 
 const COUNTRY_CN = {
+  Portugal: "葡萄牙",
+  Türkiye: "土耳其",
   Australia: "澳大利亚",
   Bahrain: "巴林",
   "Saudi Arabia": "沙特阿拉伯",
@@ -152,10 +156,12 @@ function normalizeSeason(races) {
   return races.map((race) => {
     const circuitId = race.Circuit.circuitId;
     const meta = window.CIRCUIT_META[circuitId] || { timezone: "UTC" };
-    const sessions = collectSessions(race);
-    const starts = sessions.map((session) => new Date(session.utc));
+    const sessions = race.pending ? race.pending.map(({ type, date }) => ({
+      type, date, short: SESSION_LABELS[type].short, label: SESSION_LABELS[type].cn,
+    })) : collectSessions(race);
+    const starts = sessions.map((session) => new Date(session.utc || session.date + "T12:00:00Z"));
     const weekendStart = new Date(Math.min(...starts));
-    const raceStart = new Date(`${race.date}T${race.time || "00:00:00Z"}`);
+    const raceStart = new Date(`${race.date}T${race.time || "12:00:00Z"}`);
     const raceEnd = new Date(raceStart.getTime() + 3 * 60 * 60 * 1000);
 
     return {
@@ -307,6 +313,13 @@ function compactRaceTemplate(race) {
 }
 
 function renderDetail(race) {
+  const cover = document.querySelector("#raceCover");
+  cover.src = `assets/circuits/${race.circuitId}-cover.jpg`;
+  cover.alt = race.circuitNameCn;
+  const layout = document.querySelector("#trackLayout");
+  layout.src = `assets/circuits/${race.circuitId}-layout.webp`;
+  layout.alt = race.circuitNameCn + "布局图";
+  document.querySelector("#layoutLink").href = layout.src;
   els.roundLabel.textContent = `第 ${race.round} 站 ${race.isSprint ? "· SPRINT" : ""}`;
   els.raceName.textContent = race.raceNameCn;
   els.raceMeta.textContent = `${formatRange(race)} · ${race.locality}, ${race.countryCn} · ${race.circuitNameCn}`;
@@ -329,6 +342,12 @@ function renderDetail(race) {
 }
 
 function sessionRowTemplate(session, circuitTimezone) {
+  if (!session.utc) {
+    return `<div class="session-row ${session.type === "Race" ? "race-session" : ""}">
+      <div class="session-kind"><span>${session.short}</span><strong>${session.label}</strong></div>
+      <div class="session-time"><small>当地 ${session.date.slice(5)}</small>时间待定</div>
+      <div class="session-time">待公布</div></div>`;
+  }
   const local = formatDateTime(session.utc, circuitTimezone);
   const mine = formatDateTime(session.utc, state.deviceTimeZone);
   const dayShift = local.date === mine.date ? "" : '<span class="day-shift">跨日</span>';

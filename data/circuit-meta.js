@@ -1,4 +1,6 @@
 window.CIRCUIT_META = {
+  portimao: { timezone: "Europe/Lisbon", cnName: "阿尔加维国际赛道", lengthKm: "4.653", firstGrandPrix: 2020 },
+  istanbul: { timezone: "Europe/Istanbul", cnName: "伊斯坦布尔公园赛道", lengthKm: "5.338", firstGrandPrix: 2005 },
   albert_park: {
     timezone: "Australia/Melbourne",
     lengthKm: "5.278",

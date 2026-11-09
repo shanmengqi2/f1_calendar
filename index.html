@@ -32,6 +32,7 @@
           <button type="button" data-season="2024">2024</button>
           <button type="button" data-season="2025">2025</button>
           <button type="button" data-season="2026" class="active">2026</button>
+          <button type="button" data-season="2027">2027</button>
         </div>
 
         <div class="timezone-card" aria-live="polite">
@@ -72,6 +73,7 @@
         </section>
 
         <aside class="detail-pane" id="circuit">
+          <img id="raceCover" class="race-cover" alt="" />
           <div class="detail-hero">
             <div>
               <p class="eyebrow" id="roundLabel">第 -- 站</p>
@@ -84,6 +86,7 @@
           </div>
 
           <div class="fact-strip" id="factStrip"></div>
+          <figure class="layout-figure"><figcaption>赛道布局</figcaption><a id="layoutLink" target="_blank" rel="noopener"><img id="trackLayout" alt="赛道布局图" /></a></figure>
 
           <section class="panel" aria-labelledby="sessionTitle" id="sessions">
             <div class="panel-heading">
@@ -99,15 +102,13 @@
             <div class="session-table" id="sessionTable"></div>
           </section>
 
-          <section class="panel compact" aria-labelledby="sourceTitle" id="sources">
-            <h2 id="sourceTitle">数据说明</h2>
-            <p>
-              赛程与 session 开始时间来自 Jolpica Ergast 兼容 API，赛季/赛道展示参考 Formula 1
-              官方赛历页。前端按设备时区实时换算。
-            </p>
-          </section>
         </aside>
       </main>
+      <footer class="site-footer" id="sources" aria-label="数据说明">
+        <strong>数据说明</strong>
+        2024–2026 开赛时间来自 Jolpica。2027 分站日期、冲刺安排及赛道图片来自
+        <a href="https://www.formula1.com/en/racing/2027">Formula 1 官方赛历</a>。时间待定的场次仅列出比赛地日期。
+      </footer>
     </div>
 
     <script src="data/circuit-meta.js"></script>
